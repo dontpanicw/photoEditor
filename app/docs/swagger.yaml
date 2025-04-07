@@ -1,0 +1,227 @@
+basePath: /
+definitions:
+  domain.Task:
+    properties:
+      filter:
+        type: string
+      photo:
+        type: string
+      status:
+        type: string
+    type: object
+  ram_storage.TaskRepository:
+    type: object
+  types.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  types.GetTaskStatusHandlerResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  types.LoginResponse:
+    properties:
+      session_id:
+        type: integer
+    type: object
+  types.RegisterRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  types.RegisterResponse:
+    properties:
+      result:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server.
+  title: My API
+  version: "1.0"
+paths:
+  /result/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetTask task result by id
+      parameters:
+      - description: task id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.GetTaskStatusHandlerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: GetTask a task result
+      tags:
+      - object
+  /status/{id}:
+    get:
+      consumes:
+      - application/json
+      description: GetTask status by id
+      parameters:
+      - description: task id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.GetTaskStatusHandlerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: GetTask an object
+      tags:
+      - object
+  /task:
+    post:
+      consumes:
+      - application/json
+      description: Create a new task
+      parameters:
+      - description: Task data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Create task
+      tags:
+      - object
+  /tasks:
+    get:
+      consumes:
+      - application/json
+      description: Supporting handler for get all tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ram_storage.TaskRepository'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: All tasks
+      tags:
+      - object
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Login user and create token
+      parameters:
+      - description: Данные для входа
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/types.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешная авторизация
+          schema:
+            $ref: '#/definitions/types.LoginResponse'
+        "400":
+          description: Некорректные данные
+          schema:
+            $ref: '#/definitions/types.ErrorResponse'
+        "401":
+          description: Неверный логин или пароль
+          schema:
+            $ref: '#/definitions/types.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/types.ErrorResponse'
+      summary: Authorization
+      tags:
+      - users
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Создает нового пользователя в системе.
+      parameters:
+      - description: Данные для регистрации
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/types.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Пользователь успешно зарегистрирован
+          schema:
+            $ref: '#/definitions/types.RegisterResponse'
+        "400":
+          description: Некорректные данные
+          schema:
+            $ref: '#/definitions/types.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/types.ErrorResponse'
+      summary: Registration
+      tags:
+      - users
+swagger: "2.0"

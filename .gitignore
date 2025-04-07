@@ -1,0 +1,6 @@
+.idea/
+.Ds_Store
+app/.DS_Store
+app/api/.DS_Store
+app/api/http/.DS_Store
+app/repository/.DS_Store
